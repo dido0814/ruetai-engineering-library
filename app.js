@@ -4,7 +4,17 @@ let currentCategory = "全部";
 
 async function init() {
   try {
-    const response = await fetch("database.json");
+    const API_URL =
+      "https://script.google.com/macros/s/AKfycbxla8F60ZkQ9IH6cW1LxhBV4jHU3usdzSa91nfxh4bHcK2a49-BIUjUAnOlkWUKcWTarQ/exec";
+
+    const response = await fetch(
+      API_URL + "?t=" + Date.now(),
+      {
+        cache: "no-store"
+      }
+    );
+
+
     files = await response.json();
   } catch (error) {
     console.error(error);
@@ -33,7 +43,7 @@ function buildOwners() {
 function renderSummary() {
   document.getElementById("totalCount").textContent = files.length;
   document.getElementById("categoryCount").textContent = new Set(files.map(f => f.category)).size;
-  const latest = [...files].sort((a,b) => b.updated.localeCompare(a.updated))[0];
+  const latest = [...files].sort((a, b) => b.updated.localeCompare(a.updated))[0];
   document.getElementById("latestDate").textContent = latest ? latest.updated.slice(5).replace("-", "/") : "—";
 }
 
