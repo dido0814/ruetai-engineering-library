@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>睿泰工程｜Excel 計算檔資料庫</title>
+  <link rel="stylesheet" href="styles.css">
+
+  <script>
+    const credential =
+      sessionStorage.getItem(
+        "ruetaiCredential"
+      );
+
+    if (!credential) {
+      window.location.replace(
+        "index.html"
+      );
+    }
+  </script>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">RT</div>
+      <div>
+        <h1>睿泰工程 Excel 計算檔資料庫</h1>
+        <p>Engineering Calculation File Library</p>
+      </div>
+    </div>
+    <div class="top-meta">
+      <span>公司共用資料庫</span>
+      <span class="dot"></span>
+      <span>Prototype v0.2</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">ENGINEERING FILE LIBRARY</span>
+        <h2>睿泰工程顧問公司的工程計算資料庫</h2>
+        <p>
+          將既有計算表與設計規範依專業分類、版本、更新日期與負責單位集中管理，
+          讓同仁可以快速搜尋、確認現行版本並下載使用。
+        </p>
+      </div>
+      <div class="summary">
+        <div><strong id="totalCount">0</strong><span>收錄檔案</span></div>
+        <div><strong id="categoryCount">0</strong><span>專業分類</span></div>
+        <div><strong id="latestDate">—</strong><span>最近更新</span></div>
+      </div>
+    </section>
+
+    <section class="database">
+      <aside class="sidebar">
+        <div class="side-title">專業分類</div>
+        <div id="categoryList" class="category-list"></div>
+        <div class="side-note">
+          <strong>管理原則</strong>
+          <p>網站只提供現行核定版本；舊版集中移至歷史版本區，避免同仁誤用。</p>
+        </div>
+      </aside>
+
+      <div class="content">
+        <div class="toolbar">
+          <div class="search-box">
+            <span>⌕</span>
+            <input id="searchInput" type="search" placeholder="搜尋檔名、用途、編號、負責單位…">
+          </div>
+          <select id="ownerFilter">
+            <option value="全部">全部單位</option>
+          </select>
+        </div>
+
+        <div class="content-head">
+          <div>
+            <span class="eyebrow">CURRENT FILES</span>
+            <h3 id="sectionTitle">全部計算檔</h3>
+          </div>
+          <span id="resultCount" class="result-count"></span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>編號</th>
+                <th>計算檔名稱</th>
+                <th>分類</th>
+                <th>版本</th>
+                <th>更新日期</th>
+                <th>負責單位</th>
+                <th>狀態</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="fileTable"></tbody>
+          </table>
+        </div>
+
+        <div id="cardGrid" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section class="rules">
+      <div class="rule-card">
+        <span>01</span>
+        <div>
+          <h4>單一現行版本</h4>
+          <p>網站原則上只顯示核定且可使用的最新版，避免下載錯誤版本。</p>
+        </div>
+      </div>
+      <div class="rule-card">
+        <span>02</span>
+        <div>
+          <h4>檔案與網站分離</h4>
+          <p>網站程式放 GitHub；Excel 實體檔案可放 Google Shared Drive，再由下載連結串接。</p>
+        </div>
+      </div>
+      <div class="rule-card">
+        <span>03</span>
+        <div>
+          <h4>資料欄位固定</h4>
+          <p>每個檔案至少維護編號、分類、名稱、版本、更新日期、負責單位與下載網址。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <strong>睿泰工程顧問｜Excel 計算檔資料庫</strong>
+      <span>Internal Engineering Knowledge Base</span>
+    </div>
+    <small>供公司內部共用與版本管理</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
