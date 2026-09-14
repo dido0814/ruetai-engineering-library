@@ -1,5 +1,14 @@
 function initGoogleLogin() {
 
+  if (
+    !window.google ||
+    !google.accounts ||
+    !google.accounts.id
+  ) {
+    setTimeout(initGoogleLogin, 300);
+    return;
+  }
+
   google.accounts.id.initialize({
     client_id: GOOGLE_CLIENT_ID,
     callback: handleGoogleLogin
@@ -18,93 +27,111 @@ function initGoogleLogin() {
 }
 
 
-function handleGoogleLogin(response) {
+async function handleGoogleLogin(response) {
 
   if (!response.credential) {
-    showLoginError("Google 登入失敗");
+
+    showLoginError(
+      "Google 登入失敗"
+    );
+
     return;
   }
 
   try {
 
-    const user = parseJwt(
-      response.credential
-    );
+    document
+      .getElementById("loginStatus")
+      .textContent =
+      "正在驗證使用權限…";
 
-    console.log(
-      "Google 登入帳號：",
-      user.email
-    );
 
-    /*
-      先保存 Google 登入資訊。
-      下一階段再接 Apps Script 做後端權限驗證。
-    */
+    const result =
+      await callApi(
+        "verify",
+        response.credential
+      );
 
+
+    if (!result.ok) {
+
+      showLoginError(
+        result.error ||
+        "此帳號沒有使用權限"
+      );
+
+      return;
+    }
+
+
+    // 驗證成功才保存
     sessionStorage.setItem(
       "ruetaiCredential",
       response.credential
     );
 
+
     sessionStorage.setItem(
       "ruetaiUser",
-      JSON.stringify({
-        email: user.email,
-        name: user.name,
-        picture: user.picture
-      })
+      JSON.stringify(result.user)
     );
 
-    document.getElementById(
-      "loginStatus"
-    ).innerHTML =
+
+    document
+      .getElementById("loginStatus")
+      .textContent =
       "登入成功，正在進入資料庫…";
+
 
     setTimeout(function () {
 
       window.location.href =
         "library.html";
 
-    }, 500);
+    }, 400);
+
 
   } catch (error) {
 
     console.error(error);
 
     showLoginError(
-      "無法取得 Google 帳號資訊"
+      "無法連接權限驗證服務"
     );
+
   }
+
 }
 
 
-function parseJwt(token) {
+async function callApi(
+  action,
+  credential,
+  extra = {}
+) {
 
-  const base64Url =
-    token.split(".")[1];
+  const response =
+    await fetch(
+      API_URL,
+      {
+        method: "POST",
 
-  const base64 =
-    base64Url
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
 
-  const jsonPayload =
-    decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map(function(c) {
-          return "%" +
-            ("00" +
-              c.charCodeAt(0)
-                .toString(16)
-            ).slice(-2);
+        body: JSON.stringify({
+          action: action,
+          credential: credential,
+          ...extra
         })
-        .join("")
+      }
     );
 
-  return JSON.parse(
-    jsonPayload
-  );
+
+  return await response.json();
+
 }
 
 
@@ -116,7 +143,10 @@ function showLoginError(message) {
     );
 
   el.textContent = message;
-  el.className = "login-status error";
+
+  el.className =
+    "login-status error";
+
 }
 
 

@@ -21,6 +21,42 @@
   </script>
 </head>
 
+<div id="updateModal" class="modal" style="display:none;">
+
+  <div class="modal-card">
+
+    <h3>更新檔案</h3>
+
+    <p id="updateFileTitle"></p>
+
+    <label>
+      新版本
+      <input id="updateVersion" type="text" placeholder="例如 v1.3">
+    </label>
+
+    <label>
+      選擇新版檔案
+      <input id="updateFileInput" type="file" accept=".xlsx,.xlsm,.xls,.pdf,.docx">
+    </label>
+
+    <div class="modal-actions">
+
+      <button type="button" onclick="closeUpdateModal()">
+        取消
+      </button>
+
+      <button type="button" onclick="submitUpdate()">
+        上傳並更新
+      </button>
+
+    </div>
+
+    <div id="updateStatus"></div>
+
+  </div>
+
+</div>
+
 <body>
   <header class="topbar">
     <div class="brand">
@@ -87,14 +123,12 @@
           <table>
             <thead>
               <tr>
-                <th>編號</th>
-                <th>計算檔名稱</th>
+                <th>檔案名稱</th>
                 <th>分類</th>
                 <th>版本</th>
                 <th>更新日期</th>
                 <th>負責單位</th>
-                <th>狀態</th>
-                <th></th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody id="fileTable"></tbody>
@@ -138,7 +172,9 @@
     <small>供公司內部共用與版本管理</small>
   </footer>
 
+  <script src="config.js"></script>
   <script src="app.js"></script>
+
 </body>
 
 </html>
