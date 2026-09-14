@@ -63,6 +63,7 @@ async function init() {
       )
     );
 
+    setupCurrentUser();
 
     buildOwners();
 
@@ -1090,5 +1091,70 @@ function escapeJs(
 /* =========================
    啟動
 ========================= */
+function setupCurrentUser() {
+
+  const user =
+    JSON.parse(
+      sessionStorage.getItem(
+        "ruetaiUser"
+      ) || "{}"
+    );
+
+
+  // 顯示登入者名稱
+  const nameElement =
+    document.getElementById(
+      "currentUserName"
+    );
+
+  if (nameElement) {
+
+    nameElement.textContent =
+      user.name ||
+      user.email ||
+      "";
+
+  }
+
+
+  // 只有 admin 顯示管理按鈕
+  const adminButton =
+    document.getElementById(
+      "adminButton"
+    );
+
+  if (
+    adminButton &&
+    user.role === "admin"
+  ) {
+
+    adminButton.style.display =
+      "inline-flex";
+
+  } else if (adminButton) {
+
+    adminButton.style.display =
+      "none";
+
+  }
+
+}
+
+
+function logout() {
+
+  sessionStorage.removeItem(
+    "ruetaiCredential"
+  );
+
+  sessionStorage.removeItem(
+    "ruetaiUser"
+  );
+
+  window.location.replace(
+    "index.html"
+  );
+
+}
 
 init();

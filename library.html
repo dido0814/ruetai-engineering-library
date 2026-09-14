@@ -67,10 +67,29 @@
       </div>
     </div>
     <div class="top-meta">
-      <span>公司共用資料庫</span>
-      <span class="dot"></span>
-      <span>Prototype v0.2</span>
-    </div>
+
+  <span id="currentUserName"></span>
+
+  <span class="dot"></span>
+
+  <a
+    id="adminButton"
+    href="admin.html"
+    class="admin-link"
+    style="display:none;"
+  >
+    管理後台
+  </a>
+
+  <button
+    type="button"
+    class="logout-btn"
+    onclick="logout()"
+  >
+    登出
+  </button>
+
+</div>
   </header>
 
   <main class="page">
