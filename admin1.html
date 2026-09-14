@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>睿泰工程｜後台管理中心</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .admin-page {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 28px 24px 60px;
+        }
+
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+
+            background: #fff;
+
+            border: 1px solid #e1e6ec;
+            border-radius: 16px;
+
+            padding: 20px 24px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .admin-header h2 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+
+        .admin-header p {
+            margin: 5px 0 0;
+            color: #6c7888;
+            font-size: 13px;
+        }
+
+
+        .admin-user {
+            text-align: right;
+            font-size: 13px;
+            color: #6c7888;
+        }
+
+
+        .admin-actions {
+            margin-top: 8px;
+
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+
+        .admin-actions a,
+        .admin-actions button {
+
+            border: 1px solid #dfe5ec;
+
+            background: #fff;
+
+            color: #183b56;
+
+            border-radius: 8px;
+
+            padding: 8px 12px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+
+        .admin-tabs {
+
+            display: flex;
+            gap: 8px;
+
+            margin-bottom: 18px;
+
+        }
+
+
+        .admin-tab {
+
+            padding: 11px 18px;
+
+            border: 1px solid #dfe5ec;
+
+            border-radius: 10px;
+
+            background: #fff;
+
+            color: #435064;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        .admin-tab.active {
+
+            background: #183b56;
+            color: #fff;
+            border-color: #183b56;
+
+        }
+
+
+        .admin-panel {
+
+            background: #fff;
+
+            border: 1px solid #e1e6ec;
+
+            border-radius: 16px;
+
+            padding: 22px;
+
+        }
+
+
+        .admin-panel.hidden {
+            display: none;
+        }
+
+
+        .admin-toolbar {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .admin-toolbar input {
+
+            flex: 1;
+
+            max-width: 460px;
+
+            padding: 11px 13px;
+
+            border: 1px solid #dfe5ec;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+        }
+
+
+        .primary-btn {
+
+            border: 0;
+
+            background: #183b56;
+
+            color: #fff;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+
+        .admin-table-wrap {
+            overflow: auto;
+        }
+
+
+        .admin-table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 900px;
+        }
+
+
+        .admin-table th {
+
+            text-align: left;
+
+            padding: 11px 10px;
+
+            font-size: 12px;
+
+            color: #7c8796;
+
+            border-bottom: 1px solid #e1e6ec;
+        }
+
+
+        .admin-table td {
+
+            padding: 13px 10px;
+
+            border-bottom: 1px solid #edf0f3;
+
+            font-size: 13px;
+        }
+
+
+        .admin-row-actions {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 6px;
+        }
+
+
+        .small-btn {
+
+            border: 1px solid #dfe5ec;
+
+            background: #fff;
+
+            color: #183b56;
+
+            padding: 7px 9px;
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+
+        .small-btn.warning {
+
+            background: #f5b942;
+
+            border-color: #f5b942;
+
+            color: #253342;
+        }
+
+
+        .small-btn.danger {
+
+            color: #b42318;
+
+            border-color: #efc8c5;
+        }
+
+
+        .status-y {
+
+            color: #1d7a55;
+
+            font-weight: 800;
+        }
+
+
+        .status-n {
+
+            color: #b42318;
+
+            font-weight: 800;
+        }
+
+
+        /* 彈出視窗 */
+
+        .admin-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            background:
+                rgba(17, 35, 52, .55);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+
+        .admin-modal.open {
+            display: flex;
+        }
+
+
+        .admin-modal-card {
+
+            width: 100%;
+
+            max-width: 560px;
+
+            max-height: 90vh;
+
+            overflow-y: auto;
+
+            background: #fff;
+
+            border-radius: 18px;
+
+            padding: 26px;
+
+            box-shadow:
+                0 20px 70px rgba(0, 0, 0, .22);
+        }
+
+
+        .admin-modal-card h3 {
+
+            margin: 0 0 20px;
+
+        }
+
+
+        .form-group {
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .form-group label {
+
+            display: block;
+
+            margin-bottom: 6px;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+        }
+
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+
+            width: 100%;
+
+            padding: 10px 11px;
+
+            border:
+                1px solid #dfe5ec;
+
+            border-radius: 8px;
+
+            font-family: inherit;
+
+        }
+
+
+        .form-group textarea {
+
+            min-height: 90px;
+
+            resize: vertical;
+        }
+
+
+        .modal-actions {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 8px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .modal-actions button {
+
+            padding: 9px 14px;
+
+            border-radius: 8px;
+
+            border: 1px solid #dfe5ec;
+
+            background: #fff;
+
+            cursor: pointer;
+        }
+
+
+        .modal-actions .save-btn {
+
+            background: #183b56;
+
+            color: #fff;
+
+            border-color: #183b56;
+
+        }
+
+
+        .admin-message {
+
+            margin-top: 12px;
+
+            min-height: 20px;
+
+            color: #245a7a;
+
+            font-size: 13px;
+        }
+
+
+        @media(max-width:720px) {
+
+            .admin-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .admin-user {
+                text-align: left;
+            }
+
+            .admin-actions {
+                justify-content: flex-start;
+            }
+
+            .admin-toolbar {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .admin-toolbar input {
+                max-width: none;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="logo">
+                RT
+            </div>
+
+            <div>
+
+                <h1>
+                    睿泰工程後台管理中心
+                </h1>
+
+                <p>
+                    Engineering Database Administration
+                </p>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="admin-page">
+
+
+        <!-- 上方登入資訊 -->
+
+        <section class="admin-header">
+
+            <div>
+
+                <h2>
+                    資料庫管理
+                </h2>
+
+                <p>
+                    管理公司共用檔案及系統使用者
+                </p>
+
+            </div>
+
+
+            <div class="admin-user">
+
+                <div id="adminUserInfo">
+                    讀取登入資訊中…
+                </div>
+
+                <div class="admin-actions">
+
+                    <a href="library.html">
+                        返回資料庫
+                    </a>
+
+                    <button type="button" onclick="logout()">
+                        登出
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- 頁籤 -->
+
+        <div class="admin-tabs">
+
+            <button id="fileTab" class="admin-tab active" onclick="showAdminTab('files')">
+                檔案管理
+            </button>
+
+            <button id="userTab" class="admin-tab" onclick="showAdminTab('users')">
+                人員管理
+            </button>
+
+        </div>
+
+
+        <!-- =====================
+       檔案管理
+  ====================== -->
+
+        <section id="filePanel" class="admin-panel">
+
+            <div class="admin-toolbar">
+
+                <input id="adminFileSearch" type="search" placeholder="搜尋檔案名稱、分類、單位…">
+
+                <button type="button" class="primary-btn" onclick="openCreateFileModal()">
+                    ＋ 新增檔案
+                </button>
+
+            </div>
+
+
+            <div class="admin-table-wrap">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                檔案名稱
+                            </th>
+
+                            <th>
+                                分類
+                            </th>
+
+                            <th>
+                                版本
+                            </th>
+
+                            <th>
+                                更新日期
+                            </th>
+
+                            <th>
+                                負責單位
+                            </th>
+
+                            <th>
+                                顯示
+                            </th>
+
+                            <th>
+                                操作
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="adminFileTable">
+
+                        <tr>
+
+                            <td colspan="7">
+                                讀取中…
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================
+       人員管理
+  ====================== -->
+
+        <section id="userPanel" class="admin-panel hidden">
+
+            <div class="admin-toolbar">
+
+                <input id="adminUserSearch" type="search" placeholder="搜尋姓名、Email、單位…">
+
+                <button type="button" class="primary-btn" onclick="openCreateUserModal()">
+                    ＋ 新增人員
+                </button>
+
+            </div>
+
+
+            <div class="admin-table-wrap">
+
+                <table class="admin-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                姓名
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                單位
+                            </th>
+
+                            <th>
+                                權限
+                            </th>
+
+                            <th>
+                                狀態
+                            </th>
+
+                            <th>
+                                操作
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="adminUserTable">
+
+                        <tr>
+
+                            <td colspan="6">
+                                讀取中…
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =====================
+     檔案新增 / 編輯
+====================== -->
+
+    <div id="fileModal" class="admin-modal">
+
+        <div class="admin-modal-card">
+
+            <h3 id="fileModalTitle">
+                新增檔案
+            </h3>
+
+
+            <div class="form-group">
+
+                <label>
+                    分類
+                </label>
+
+                <select id="fileCategory">
+
+                    <option value="土木工程">
+                        土木工程
+                    </option>
+
+                    <option value="管線工程">
+                        管線工程
+                    </option>
+
+                    <option value="水利工程">
+                        水利工程
+                    </option>
+
+                    <option value="工程管理">
+                        工程管理
+                    </option>
+
+                    <option value="設計規範">
+                        設計規範
+                    </option>
+
+                    <option value="共用工具">
+                        共用工具
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    檔案名稱
+                </label>
+
+                <input id="fileTitle" type="text">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    說明
+                </label>
+
+                <textarea id="fileDescription"></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    版本
+                </label>
+
+                <input id="fileVersion" type="text" placeholder="例如 v1.0">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    負責單位
+                </label>
+
+                <select id="fileOwner">
+
+                    <option value="土木組">
+                        土木組
+                    </option>
+
+                    <option value="管線組">
+                        管線組
+                    </option>
+
+                    <option value="水利組">
+                        水利組
+                    </option>
+
+                    <option value="工務組">
+                        工務組
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    是否顯示
+                </label>
+
+                <select id="fileVisible">
+
+                    <option value="Y">
+                        顯示
+                    </option>
+
+                    <option value="N">
+                        隱藏
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div id="newFileUploadGroup" class="form-group">
+
+                <label>
+                    選擇檔案
+                </label>
+
+                <input id="newFileInput" type="file" accept=".xlsx,.xlsm,.xls,.pdf,.docx">
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button" onclick="closeFileModal()">
+                    取消
+                </button>
+
+                <button type="button" class="save-btn" onclick="saveFile()">
+                    儲存
+                </button>
+
+            </div>
+
+
+            <div id="fileModalMessage" class="admin-message"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+     更新實體檔案
+====================== -->
+
+    <div id="replaceFileModal" class="admin-modal">
+
+        <div class="admin-modal-card">
+
+            <h3>
+                更新檔案
+            </h3>
+
+            <p id="replaceFileTitle"></p>
+
+
+            <div class="form-group">
+
+                <label>
+                    新版本
+                </label>
+
+                <input id="replaceVersion" type="text" placeholder="例如 v1.3">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    選擇新版檔案
+                </label>
+
+                <input id="replaceFileInput" type="file" accept=".xlsx,.xlsm,.xls,.pdf,.docx">
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button" onclick="closeReplaceFileModal()">
+                    取消
+                </button>
+
+                <button type="button" class="save-btn" onclick="replaceFile()">
+                    上傳並更新
+                </button>
+
+            </div>
+
+
+            <div id="replaceFileMessage" class="admin-message"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+     人員新增 / 編輯
+====================== -->
+
+    <div id="userModal" class="admin-modal">
+
+        <div class="admin-modal-card">
+
+            <h3 id="userModalTitle">
+                新增人員
+            </h3>
+
+
+            <div class="form-group">
+
+                <label>
+                    Google Email
+                </label>
+
+                <input id="userEmail" type="email" placeholder="example@gmail.com">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    姓名
+                </label>
+
+                <input id="userName" type="text">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    單位
+                </label>
+
+                <select id="userUnit">
+
+                    <option value="土木組">
+                        土木組
+                    </option>
+
+                    <option value="管線組">
+                        管線組
+                    </option>
+
+                    <option value="水利組">
+                        水利組
+                    </option>
+
+                    <option value="工務組">
+                        工務組
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    權限
+                </label>
+
+                <select id="userRole">
+
+                    <option value="user">
+                        一般使用者
+                    </option>
+
+                    <option value="admin">
+                        管理者
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    狀態
+                </label>
+
+                <select id="userActive">
+
+                    <option value="Y">
+                        啟用
+                    </option>
+
+                    <option value="N">
+                        停用
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button" onclick="closeUserModal()">
+                    取消
+                </button>
+
+                <button type="button" class="save-btn" onclick="saveUser()">
+                    儲存
+                </button>
+
+            </div>
+
+
+            <div id="userModalMessage" class="admin-message"></div>
+
+        </div>
+
+    </div>
+
+
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+
+</body>
+
+</html>
